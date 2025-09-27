@@ -6,14 +6,22 @@ const meetingRouter = require("./routes/meetingRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
-const FRONTEND_URL = process.env.CLIENT_URL || "http://localhost:5173";
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://interview-client-topaz.vercel.app"
+];
 
-// Middleware
 app.use(cors({
-    origin: FRONTEND_URL,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
 }));
 
 app.use(bodyParser.urlencoded({ extended: true }));
