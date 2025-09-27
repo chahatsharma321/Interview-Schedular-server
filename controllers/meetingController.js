@@ -10,7 +10,7 @@ oAuth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
 
 const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
 
-const sendMail = async (email, name, meetLink, date, timeSlots, interviewerName, position) => {
+const sendMail = async (email, name, date, timeSlots, interviewerName, position) => {
     const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -34,7 +34,7 @@ Position: ${position}
 Interviewer Name: ${interviewerName}
 Date: ${date}
 Time Slot: ${timeSlots.join(", ")}
-Meeting Link: ${meetLink}
+Meeting Link: "https://ai-interview-bot-gamma.vercel.app/"
 
 Please ensure that you're available during the selected slot and join the meeting on time to avoid delays in project initiation.
 
@@ -95,7 +95,7 @@ const scheduleMeeting = async (req, res) => {
         // Scheduling based on the first selected time slot
         const meetLink = await scheduleMeet(email, name, date, time[0]);
 
-        await sendMail(email, name, meetLink, date, time, interviewerName, position);
+        await sendMail(email, name, date, time, interviewerName, position);
 
         res.json({ success: true, meetLink });
     } catch (error) {
