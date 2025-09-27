@@ -6,7 +6,7 @@ const meetingRouter = require("./routes/meetingRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
-const FRONTEND_URL = "https://interview-client-topaz.vercel.app/" || "http://localhost:5173";
+const FRONTEND_URL = process.env.CLIENT_URL || "http://localhost:5173";
 
 // Middleware
 app.use(cors({
